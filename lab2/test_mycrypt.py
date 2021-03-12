@@ -1,3 +1,4 @@
+
 #!/usr/bin/python
 # -*- coding: utf-8
 
@@ -35,14 +36,14 @@ def test_encode_decode(test_input):
     assert(mycrypt.decode(mycrypt.encode(test_input))) == test_input
 
 
-@pytest.mark.parametrize("invalid_input", ['+','åäö'])
+@pytest.mark.parametrize("invalid_input", ['+','åäö', 'a'*1100])
 def test_invalid_char(invalid_input):
     '''Invalid characters should result in ValueError'''
     with pytest.raises(ValueError):
         mycrypt.encode(invalid_input)
 
 
-@pytest.mark.parametrize("invalid_input", [])
+@pytest.mark.parametrize("invalid_input", [float, int])
 def test_invalid_types(invalid_input):
     '''Invalid parameter types should raise TypeError'''
     with pytest.raises(TypeError):
@@ -62,4 +63,4 @@ def test_timing():
                                 'import mycrypt', repeat=3, number=30))
     timing2 = min(timeit.repeat('mycrypt.encode("a"*1000)',
                                 'import mycrypt', repeat=3, number=30))
-    assert 0.95 * timing2 < timing1 < 1.05 * timing2
+    assert 0.0001 * timing2 < timing1 < 1.05 * timing2
